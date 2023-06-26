@@ -25,25 +25,27 @@
                 <nav>
                     <ul class="pagination justify-content-center">
                         <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                        <li class="page-item"><a class="page-link" href="#">25-2023</a></li>
+                        <li class="page-item"><a class="page-link" href="#" id="date">20-2023</a></li>
                         <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
     </div>
-    <div class="alert alert-danger" role="alert" style="display: none"></div>
+    <div class="alert alert-danger" role="alert" id="message" style="display: none"></div>
     <div id="table-container" class="table-responsive">
         <table class='table' id="table">
             <tbody>
             <tr id="table-header">
-                <th class='col'>Datum</th>
-                <th class='col'>Wochentag</th>
-                <th class='col'>Von</th>
-                <th class='col'>Bis</th>
-                <th class='col'>Lehrer</th>
-                <th class='col'>Fach</th>
-                <th class='col'>Raum</th>
+                <thead>
+                    <th>Datum</th>
+                    <th>Wochentag</th>
+                    <th>Von</th>
+                    <th>Bis</th>
+                    <th>Lehrer</th>
+                    <th>Fach</th>
+                    <th>Raum</th>
+                </thead>
             </tr>
             </tbody>
         </table>
@@ -51,6 +53,7 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
