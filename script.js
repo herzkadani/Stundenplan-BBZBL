@@ -19,6 +19,16 @@ $(document).ready(function () {
                     options += "<option value='" + beruf.beruf_id + "'>" + beruf.beruf_name + "</option>";
                 });
                 $("#beufsgruppe-select").append(options);
+                if ($.isEmptyObject(data)) {
+                    $("#message").hmtl("Es konnten keine Berufe geladen werden." + "<br>");
+                    $("#message").css("display", "block");
+                }else{
+                    $("#message").css("display", "none");
+                }
+            },
+            error: function (error_msg) {
+                $("#message").hmtl("Es konnten keine Berufe geladen werden." + "<br>");
+                $("#message").css("display", "block");
             }
         });
     }
@@ -35,7 +45,18 @@ $(document).ready(function () {
                     options += "<option value='" + klasse.klasse_id + "'>" + klasse.klasse_longname + "</option>";
                 });
                 $("#klasse-select").append(options);
+                if ($.isEmptyObject(data)) {
+                    $("#message").hmtl("Es konnten keine Klassen geladen werden."+ "<br>");
+                    $("#message").css("display", "block")
+                }else{
+                    $("#message").css("display", "none")
+                }
+            },
+            error: function (error_msg) {
+                $("#message").hmtl("Es konnten keine Klassen geladen werden."+ "<br>");
+                $("#message").css("display", "block")
             }
+
 
         });
     }
@@ -75,9 +96,32 @@ $(document).ready(function () {
 
                 });
                 $("tbody").html(table_rows);
+                if ($.isEmptyObject(data)) {
+                    $("#message").html("Es konnten keine Stundenplan-Daten geladen werden."+ "<br>");
+                    $("#message").css("display", "block")
+                }else{
+                    $("#message").css("display", "none")
+                }
+            },
+            error: function (error_msg) {
+                $("#message").html("Es konnten keine Stundenplan-Daten geladen werden."+ "<br>");
+                $("#message").css("display", "block")
             }
+
         });
 
+    });
+
+    $("#page-up").click(function () {
+        date = moment(date).add(1, 'weeks');
+        $("#date").text(moment(date).format('WW-YYYY'));
+        $("#klasse-select").trigger("change");
+    });
+
+    $("#page-down").click(function () {
+        date = moment(date).subtract(1, 'weeks');
+        $("#date").text(moment(date).format('WW-YYYY'));
+        $("#klasse-select").trigger("change");
     });
 
 
