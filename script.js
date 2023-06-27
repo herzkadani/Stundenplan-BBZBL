@@ -4,8 +4,13 @@ $(document).ready(function () {
     var date = new Date();
     $("#date").text(moment(date).format('WW-YYYY'));
 
+    // load berufe and klassen
     loadAllBerufe();
     loadAllKlassen();
+
+    // load from local storage
+
+
 
     function loadAllBerufe() {
         $.ajax({
@@ -25,6 +30,13 @@ $(document).ready(function () {
                 }else{
                     $("#message").css("display", "none");
                 }
+                if (localStorage.getItem("selectedBeruf") !== null && localStorage.getItem("selectedKlasse") !== null) {
+                    $("#beufsgruppe-select").val(localStorage.getItem("selectedBeruf"));
+                }else if(localStorage.getItem("selectedBeruf") !== null){
+                    $("#beufsgruppe-select").val(localStorage.getItem("selectedBeruf"));
+                    $("#beufsgruppe-select").trigger("change");
+                }
+
             },
             error: function (error_msg) {
                 $("#message").hmtl("Es konnten keine Berufe geladen werden." + "<br>");
@@ -51,6 +63,11 @@ $(document).ready(function () {
                 }else{
                     $("#message").css("display", "none")
                 }
+                if (localStorage.getItem("selectedBeruf") !== null && localStorage.getItem("selectedKlasse") !== null) {
+                    $("#klasse-select").val(localStorage.getItem("selectedKlasse"));
+                    $("#klasse-select").trigger("change");
+                }
+
             },
             error: function (error_msg) {
                 $("#message").hmtl("Es konnten keine Klassen geladen werden."+ "<br>");
@@ -63,7 +80,8 @@ $(document).ready(function () {
 
     $("#beufsgruppe-select").change(function () {
         var selectedBeruf = $(this).val();
-        if (selectedBeruf !== "") {
+        if (selectedBeruf !== "" && localStorage.getItem("selectedKlasse")) {
+            localStorage.setItem("selectedBeruf", selectedBeruf);
             $.ajax({
                 url: "https://sandbox.gibm.ch/klassen.php?beruf_id=" + selectedBeruf,
                 method: "GET",
@@ -85,31 +103,34 @@ $(document).ready(function () {
 
     $("#klasse-select").change(function () {
         console.log("https://sandbox.gibm.ch/tafel.php?klasse_id=" + $(this).val() + "&woche=" + $("#date").text());
-        $.ajax({
-            url: "https://sandbox.gibm.ch/tafel.php?klasse_id=" + $(this).val() + "&woche=" + $("#date").text(),
-            method: "GET",
-            dataType: "json",
-            success: function (data) {
-                var table_rows = "";
-                $.each(data, function (index, tafel) {
-                    table_rows += "<tr><td>" + tafel.tafel_datum + "</td><td>" + tafel.tafel_wochentag + "</td><td>" + tafel.tafel_von + "</td><td>" + tafel.tafel_bis + "</td><td>" + tafel.tafel_lehrer + "</td><td>" + tafel.tafel_longfach + "</td><td>" + tafel.tafel_raum + "</td></tr>";
+        if ($(this).val() !== "") {
+            localStorage.setItem("selectedKlasse", $(this).val());
 
-                });
-                $("tbody").html(table_rows);
-                if ($.isEmptyObject(data)) {
-                    $("#message").html("Es konnten keine Stundenplan-Daten geladen werden."+ "<br>");
+            $.ajax({
+                url: "https://sandbox.gibm.ch/tafel.php?klasse_id=" + $(this).val() + "&woche=" + $("#date").text(),
+                method: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var table_rows = "";
+                    $.each(data, function (index, tafel) {
+                        table_rows += "<tr><td>" + tafel.tafel_datum + "</td><td>" + tafel.tafel_wochentag + "</td><td>" + tafel.tafel_von + "</td><td>" + tafel.tafel_bis + "</td><td>" + tafel.tafel_lehrer + "</td><td>" + tafel.tafel_longfach + "</td><td>" + tafel.tafel_raum + "</td></tr>";
+
+                    });
+                    $("tbody").html(table_rows);
+                    if ($.isEmptyObject(data)) {
+                        $("#message").html("Es konnten keine Stundenplan-Daten geladen werden." + "<br>");
+                        $("#message").css("display", "block")
+                    } else {
+                        $("#message").css("display", "none")
+                    }
+                },
+                error: function (error_msg) {
+                    $("#message").html("Es konnten keine Stundenplan-Daten geladen werden." + "<br>");
                     $("#message").css("display", "block")
-                }else{
-                    $("#message").css("display", "none")
                 }
-            },
-            error: function (error_msg) {
-                $("#message").html("Es konnten keine Stundenplan-Daten geladen werden."+ "<br>");
-                $("#message").css("display", "block")
-            }
 
-        });
-
+            });
+        }
     });
 
     $("#page-up").click(function () {
