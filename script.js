@@ -113,7 +113,7 @@ $(document).ready(function () {
                 success: function (data) {
                     var table_rows = "";
                     $.each(data, function (index, tafel) {
-                        table_rows += "<tr><td>" + tafel.tafel_datum + "</td><td>" + tafel.tafel_wochentag + "</td><td>" + tafel.tafel_von + "</td><td>" + tafel.tafel_bis + "</td><td>" + tafel.tafel_lehrer + "</td><td>" + tafel.tafel_longfach + "</td><td>" + tafel.tafel_raum + "</td></tr>";
+                        table_rows += "<tr class='animation'><td>" + tafel.tafel_datum + "</td><td>" + tafel.tafel_wochentag + "</td><td>" + tafel.tafel_von + "</td><td>" + tafel.tafel_bis + "</td><td>" + tafel.tafel_lehrer + "</td><td>" + tafel.tafel_longfach + "</td><td>" + tafel.tafel_raum + "</td></tr>";
 
                     });
                     $("tbody").html(table_rows);
