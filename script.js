@@ -88,7 +88,7 @@ $(document).ready(function () {
     $("#beufsgruppe-select").change(function () {
         // load klassen for selected beruf
         var selectedBeruf = $(this).val();
-        if (selectedBeruf !== "" && localStorage.getItem("selectedKlasse")) {
+        if (selectedBeruf !== "") {
             // save selected beruf in local storage
             localStorage.setItem("selectedBeruf", selectedBeruf);
             $.ajax({
